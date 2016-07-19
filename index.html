@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Three.js sample</title>
+    <style> body { margin: 0; overflow: hidden;} canvas { width: 100%; height: 100%;}</style>
+  </head>
+  <body>
+    <script src="three.min.js"></script> <!-- Three.js を取得 -->
+    <script>
+      var scene = new THREE.Scene(); // Three.js シーンオブジェクトの生成
+      var width = window.innerWidth;//表示領域の大きさを取得
+      var height = window.innerHeight;
+      var fov = 50;//視野角
+      var near = 0.1;// 視錐台の全面までの距離
+      var far = 100.0;// 視錐台の後ろまでの距離 
+      var camera = new THREE.PerspectiveCamera(fov, width / height, near, far); // カメラの設定
+      camera.position.set( 0, 0, 10 );
+  
+      var renderer = new THREE.WebGLRenderer();// WebGLのレンダラを生成
+      renderer.setSize(width, height); // ビューポートの大きさを設定
+      document.body.appendChild(renderer.domElement); // レンダラをbodyに紐づけ
+  
+      var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.0 );// 平行光源を作成（色、強さ）
+      directionalLight.position.set( 0.2, 0.7, 0.5 );// 平行光源の向き
+      scene.add( directionalLight );// シーンに配置
+      
+      var geometry = new THREE.CubeGeometry(1, 1, 1); // 四角形の生成
+      var material = new THREE.MeshLambertMaterial( { color: 'skyblue' } ) // マテリアルの作成（青）
+      var mesh = new THREE.Mesh(geometry, material); // メッシュとマテリアルからオブジェクトを生成
+      scene.add(mesh); // シーンに配置
+  
+      (function update() {
+        requestAnimationFrame(update); // ブラウザを更新するためのリクエスト
+        
+        // 少しずつ回転
+        mesh.rotation.x += 0.01;
+        mesh.rotation.y += 0.01;
+  
+        renderer.render(scene, camera); // 物体を描画
+      })();// 定義してそのまま起動
+    </script>
+  </body>
+</html>
