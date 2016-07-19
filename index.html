@@ -99,7 +99,17 @@
            camera.aspect = width / height;// 描画領域が半分になることのアスペクト比の対応
            camera.updateProjectionMatrix();// 射影行列を更新
           renderer.render( scene, camera ); // 物体を描画
-          renderer.render( scene, -camera );
+          
+           var left   = Math.floor( width  * view.left );
+          var w  = Math.floor( width >> 1 );
+          var h = Math.floor( height );
+          var separation_distance2 = 0.0 * width;
+          if(i == 0) separation_distance2 = -separation_distance2;// ０の時は反対方向にずれる
+           renderer.setViewport2( separation_distance2, 0, width, height );// 注視点を各視点の中心に持ってくる
+           renderer.setScissor2( left, 0, width, height );// 画面の半分だけ更新
+           camera.aspect2 = width / height;// 描画領域が半分になることのアスペクト比の対応
+           camera.updateProjectionMatrix();// 射影行列を更新
+          renderer.render2( scene, camera ); // 物体を描画
         }
       })();// 定義してそのまま起動
     </script>
